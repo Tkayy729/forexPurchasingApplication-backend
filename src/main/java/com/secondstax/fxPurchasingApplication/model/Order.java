@@ -31,7 +31,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "trader_email")
     @JsonBackReference
-    private Trader traders;
+    private Trader trader;
 
     @ManyToOne
     @JoinColumn(name = "bank_account")

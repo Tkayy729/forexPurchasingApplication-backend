@@ -1,7 +1,9 @@
 package com.secondstax.fxPurchasingApplication.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.secondstax.fxPurchasingApplication.enums.Currency;
 import com.secondstax.fxPurchasingApplication.enums.OrderStatus;
+import com.secondstax.fxPurchasingApplication.enums.Provider;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,15 +20,17 @@ public class Order {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
-
-    private String fores;
+    @Enumerated(EnumType.STRING)
+    private Currency exchange;
 
     private String country;
+    private Double amount;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
     @ManyToOne
     @JoinColumn(name = "trader_email")
@@ -35,6 +39,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "bank_account")
+    @JsonBackReference
     private BankAccount bankAccount;
 
 }

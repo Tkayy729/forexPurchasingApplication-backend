@@ -2,6 +2,7 @@ package com.secondstax.fxPurchasingApplication.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.secondstax.fxPurchasingApplication.enums.Currency;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,9 @@ public class BankAccount {
     private String accountNumber;
 
     private String branchName;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     @ManyToOne
     @JoinColumn(name = "trader_email")

@@ -2,11 +2,12 @@ package com.secondstax.fxPurchasingApplication.dto;
 
 import com.secondstax.fxPurchasingApplication.enums.Currency;
 import com.secondstax.fxPurchasingApplication.enums.Provider;
-import com.secondstax.fxPurchasingApplication.model.BankAccount;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
-public record OrderRequest(
+public record ProviderDataRequest(
+        Double amount,
         Provider provider,
-        Long bankAccountId,
-        Currency exchange,
-        Double amount
-) { }
+        Currency currency
+) {
+}

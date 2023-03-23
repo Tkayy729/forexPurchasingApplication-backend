@@ -1,11 +1,12 @@
 package com.secondstax.fxPurchasingApplication.dto;
 
-import com.secondstax.fxPurchasingApplication.enums.OrderStatus;
-import com.secondstax.fxPurchasingApplication.model.BankAccount;
+import com.secondstax.fxPurchasingApplication.enums.Currency;
+import com.secondstax.fxPurchasingApplication.enums.Provider;
 
-public record OrderResponse  (String trader_Email,
-                              String provider,
-                              BankAccount bankAccount,
-                              String exchange,
-                              OrderStatus status
-                              ){ }
+public record OrderResponse(String trader_Email,
+                            Provider provider,
+                            Long bankAccountId,
+                            Currency exchange,
+                            Double amount
+) {
+}

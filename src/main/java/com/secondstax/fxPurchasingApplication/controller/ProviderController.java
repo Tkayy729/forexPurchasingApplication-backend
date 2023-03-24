@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/provider")
-@CrossOrigin("*")
 public class ProviderController {
     private final LiquidityService liquidityService;
 

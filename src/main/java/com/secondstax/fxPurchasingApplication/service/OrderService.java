@@ -6,7 +6,11 @@ import com.secondstax.fxPurchasingApplication.exception.ResourceNotFoundExceptio
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
+
 
 public interface OrderService {
     OrderResponse createOrder(OrderRequest orderRequest, @AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException;
+    OrderResponse getOne(Long orderId,@AuthenticationPrincipal UserDetails userDetails ) throws ResourceNotFoundException;
+    List<OrderResponse> getAllOrdersOfTrader(UserDetails userDetails) throws ResourceNotFoundException;
 }

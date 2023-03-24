@@ -1,7 +1,6 @@
 package com.secondstax.fxPurchasingApplication.service.Impl;
 
-import com.secondstax.fxPurchasingApplication.enums.Currency;
-import com.secondstax.fxPurchasingApplication.enums.Provider;
+
 import com.secondstax.fxPurchasingApplication.model.ProviderData;
 import com.secondstax.fxPurchasingApplication.dto.ProviderDataRequest;
 import com.secondstax.fxPurchasingApplication.exception.ResourceNotFoundException;

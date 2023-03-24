@@ -11,16 +11,27 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/orders")
 @AllArgsConstructor
-@CrossOrigin("*")
 public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest, @AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
     return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(orderRequest, userDetails));
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable Long orderId,@AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOne(orderId,userDetails));
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<OrderResponse>> getAllOrders(@AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getAllOrdersOfTrader(userDetails));
     }
 
 }

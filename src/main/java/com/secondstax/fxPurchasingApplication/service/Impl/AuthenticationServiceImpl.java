@@ -31,8 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        Optional<Trader> userEmail = repository.findByEmail(request.getEmail());
-        if(userEmail.isPresent()){
+        Optional<Trader> targetTrader = repository.findByEmail(request.getEmail());
+        if(targetTrader.isPresent()){
             throw new TraderAlreadyExistException("This user already exist");
         }
         var trader = Trader.builder().firstname(request.getFirstname()).lastname(request.getLastname()).email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();

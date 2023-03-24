@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/bankaccounts")
-@CrossOrigin("*")
 public class BankAccountController {
     private final BankAccountService bankAccountService;
 
@@ -32,8 +31,8 @@ public class BankAccountController {
     }
 
     @GetMapping ("/{bankAccountId}")
-    public ResponseEntity<BankAccountResponse> getAccount(@PathVariable Long bankAccountId) throws ResourceNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.getAccount(bankAccountId));
+    public ResponseEntity<BankAccountResponse> getAccount(@PathVariable Long bankAccountId,@AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.getAccount(bankAccountId,userDetails));
     }
 
 }

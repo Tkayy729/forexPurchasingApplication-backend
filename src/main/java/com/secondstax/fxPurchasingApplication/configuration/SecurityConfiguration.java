@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -24,9 +26,9 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()
                 .cors()
+                .and()
+                .csrf()
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**")
@@ -45,7 +47,22 @@ public class SecurityConfiguration {
                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
         ;
 
+
         return http.build();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("*")
+                        .allowCredentials(false);
+            }
+        };
     }
 }
 

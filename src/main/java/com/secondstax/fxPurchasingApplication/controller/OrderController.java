@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/orders")
+@RequestMapping("/api/v1/orders")
 @AllArgsConstructor
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest, @AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
     return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(orderRequest, userDetails));
     }
@@ -29,7 +29,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getOne(orderId,userDetails));
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<OrderResponse>> getAllOrders(@AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getAllOrdersOfTrader(userDetails));
     }

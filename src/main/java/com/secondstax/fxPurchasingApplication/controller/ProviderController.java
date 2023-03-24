@@ -13,18 +13,18 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/provider")
+@RequestMapping("/api/v1/provider")
+@CrossOrigin(origins = "*")
 public class ProviderController {
     private final LiquidityService liquidityService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<String> addData(@RequestBody ProviderDataRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(liquidityService.addData(request));
 
     }
 
-
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<ProviderData>> getAll() throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(liquidityService.getAllData());
     }

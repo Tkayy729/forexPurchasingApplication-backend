@@ -15,17 +15,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/bankaccounts")
+@RequestMapping("/api/v1/bankaccounts")
 public class BankAccountController {
     private final BankAccountService bankAccountService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<BankAccountResponse> createBankAccount(@RequestBody BankAccountRequest bankAccountRequest, @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bankAccountService.addBankAccount(bankAccountRequest, userDetails));
 
     }
 
-    @GetMapping ("/")
+    @GetMapping ("")
     public ResponseEntity<List<BankAccountResponse>> getAllAccounts(@AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.getAllBankAccountOfTrader(userDetails));
     }

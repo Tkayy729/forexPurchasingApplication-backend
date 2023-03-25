@@ -5,6 +5,7 @@ import com.secondstax.fxPurchasingApplication.dto.OrderRequest;
 import com.secondstax.fxPurchasingApplication.exception.OrderCreationConflictException;
 import com.secondstax.fxPurchasingApplication.exception.ResourceNotFoundException;
 import com.secondstax.fxPurchasingApplication.model.BankAccount;
+import com.secondstax.fxPurchasingApplication.model.Order;
 import com.secondstax.fxPurchasingApplication.model.Trader;
 import com.secondstax.fxPurchasingApplication.repository.OrderRepository;
 import com.secondstax.fxPurchasingApplication.service.BankAccountService;
@@ -58,9 +59,20 @@ class OrderServiceImplTest {
 
     @Test
     void testThat_placingOrderWithZeroOrLessAmount_shouldThrowError() throws ResourceNotFoundException {
-        doReturn(bankAccount1).when(bankAccountService).findAccount(1L,trader);
+        doReturn(bankAccount).when(bankAccountService).findAccount(1L,trader);
 
         Assertions.assertThrows(OrderCreationConflictException.class, () -> serviceUnderTest.createOrder(zeroAmountRequest,trader));
+
+    }
+
+    @Test
+    void testThat_givenAValidRequest_shouldCreateOrderSuccessfully() throws ResourceNotFoundException {
+        doReturn(bankAccount).when(bankAccountService).findAccount(1L,trader);
+        doReturn(Order.builder().trader(trader).build()).when(repository).save(any());
+
+        serviceUnderTest.createOrder(orderRequest,trader);
+
+        verify(repository,times(1)).save(any());
 
     }
 

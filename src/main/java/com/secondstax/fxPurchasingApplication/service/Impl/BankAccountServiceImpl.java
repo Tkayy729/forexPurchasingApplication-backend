@@ -27,7 +27,6 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public BankAccountResponse addBankAccount(BankAccountRequest bankAccountRequest, UserDetails userDetails) {
         String email = userDetails.getUsername();
-        System.out.println(email);
         Trader trader = traderService.getTrader(email);
         BankAccount newAccount = BankAccount.builder().trader(trader).currency(bankAccountRequest.getCurrency()).name(bankAccountRequest.getName()).accountNumber(bankAccountRequest.getAccountNumber()).bankName(bankAccountRequest.getBankName()).build();
         BankAccount savedAccount = bankAccountRepository.save(newAccount);

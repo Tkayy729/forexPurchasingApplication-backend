@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Optional;
+
 
 import static com.secondstax.fxPurchasingApplication.enums.Currency.EUR;
 import static org.mockito.Mockito.*;
@@ -24,7 +24,6 @@ class BankAccountServiceImplTest {
     final UserDetails userDetails = Trader.builder().email("test@gmail.com").build();
     final BankAccountRequest request = BankAccountRequest.builder().accountNumber("456").name("emmanuel").currency(EUR).bankName("Mile 7").build();
 
-    final BankAccount newBankAccount = BankAccount.builder().trader(trader).accountNumber("2324").accountNumber("456").name("emmanuel").currency(EUR).bankName("Mile 7").build();
     final BankAccount bankAccount = BankAccount.builder().trader(trader).accountNumber("2324").accountNumber("456").name("emmanuel").currency(EUR).bankName("Mile 7").build();
 
     @Autowired
@@ -37,25 +36,13 @@ class BankAccountServiceImplTest {
     private TraderService traderService;
 
     @Test
-    void addBankAccount() {
-//        doReturn(trader).when(traderService).getTrader(userDetails.getUsername());
-////        doReturn(Optional.of(bankAccount)).when(bankAccountRepository).save(newBankAccount);
-//
-//        serviceUnderTest.addBankAccount(request, userDetails);
-//        verify(bankAccountRepository, times(1)).save(newBankAccount);
-//
+    void thatThat_whenGivenValidBankAccountRequest_accountShouldBeCreatedSuccessfully() {
+        doReturn(trader).when(traderService).getTrader(userDetails.getUsername());
+       doReturn(bankAccount).when(bankAccountRepository).save(any());
+
+        serviceUnderTest.addBankAccount(request, userDetails);
+        verify(bankAccountRepository, times(1)).save(any());
 
     }
 
-    @Test
-    void getAllBankAccountOfTrader() {
-    }
-
-    @Test
-    void getAccount() {
-    }
-
-    @Test
-    void findAccount() {
-    }
 }

@@ -53,11 +53,23 @@ class AuthenticationServiceImplTest {
     }
 
     @Test
-    void testThat_registeringAnNewTrader_shouldCreateATrader() {
+    void testThat_registeringAnNewTrader_shouldThrowError() {
         doReturn(Optional.of(trader)).when(repository).findByEmail("test@gmail.com");
+//        serviceUnderTest.register(RegisterRequest.builder().email("test@gmail.com").build());
+//        verify(repository,times(1)).save(any());
+//        verify(jwtService,times(1)).generateToken(any());
+        Assertions.assertThrows(TraderAlreadyExistException.class, () -> serviceUnderTest.register(RegisterRequest.builder().email("test@gmail.com").build()));
+
+    }
+
+    @Test
+    void testThat_registeringAnNewTrader_shouldCreateTrader() {
+        doReturn(Optional.empty()).when(repository).findByEmail("test@gmail.com");
         serviceUnderTest.register(RegisterRequest.builder().email("test@gmail.com").build());
         verify(repository,times(1)).save(any());
         verify(jwtService,times(1)).generateToken(any());
+//        Assertions.assertThrows(TraderAlreadyExistException.class, () -> serviceUnderTest.register(RegisterRequest.builder().email("test@gmail.com").build()));
+
     }
 
 }

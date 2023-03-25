@@ -48,18 +48,22 @@ public class OrderServiceImpl implements OrderService {
                 .amount(orderRequest.amount())
                 .build();
 
+        orderValidation( orderRequest,  newOrder);
+
+        var savedOrder = repository.save(newOrder);
+        return new OrderResponse(savedOrder.getId(),savedOrder.getTrader().getEmail(), savedOrder.getProvider(), savedOrder.getBankAccount(), savedOrder.getExchange(), savedOrder.getAmount(), savedOrder.getStatus());
+    }
+
+    private void orderValidation(OrderRequest orderRequest, Order newOrder){
         if(orderRequest.amount() <= 0){
             throw new OrderCreationConflictException("Cannot create an order with less or zero amount");
         } else if (orderRequest.amount() >= 1 && orderRequest.amount() <= 50) {
-           newOrder.setStatus(OrderStatus.FULFILLED);
+            newOrder.setStatus(OrderStatus.FULFILLED);
         }else if (orderRequest.amount() >= 51 && orderRequest.amount() <= 100) {
             newOrder.setStatus(OrderStatus.PENDING);
         } else {
             newOrder.setStatus(OrderStatus.FAILED);
         }
-
-        var savedOrder = repository.save(newOrder);
-        return new OrderResponse(savedOrder.getId(),savedOrder.getTrader().getEmail(), savedOrder.getProvider(), savedOrder.getBankAccount(), savedOrder.getExchange(), savedOrder.getAmount(), savedOrder.getStatus());
     }
 
     private Order getOrder(Long orderId,@AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {

@@ -22,10 +22,10 @@ class BankAccountServiceImplTest {
     final Trader trader = Trader.builder().email("test@gmail.com").build();
 
     final UserDetails userDetails = Trader.builder().email("test@gmail.com").build();
-    final BankAccountRequest request = BankAccountRequest.builder().accountNumber("456").name("emmanuel").currency(EUR).branchName("Mile 7").build();
+    final BankAccountRequest request = BankAccountRequest.builder().accountNumber("456").name("emmanuel").currency(EUR).bankName("Mile 7").build();
 
-    final BankAccount newBankAccount = BankAccount.builder().trader(trader).accountNumber("2324").accountNumber("456").name("emmanuel").currency(EUR).branchName("Mile 7").build();
-    final BankAccount bankAccount = BankAccount.builder().trader(trader).accountNumber("2324").accountNumber("456").name("emmanuel").currency(EUR).branchName("Mile 7").build();
+    final BankAccount newBankAccount = BankAccount.builder().trader(trader).accountNumber("2324").accountNumber("456").name("emmanuel").currency(EUR).bankName("Mile 7").build();
+    final BankAccount bankAccount = BankAccount.builder().trader(trader).accountNumber("2324").accountNumber("456").name("emmanuel").currency(EUR).bankName("Mile 7").build();
 
     @Autowired
     private BankAccountService serviceUnderTest;

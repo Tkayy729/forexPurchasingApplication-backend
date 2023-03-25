@@ -24,7 +24,7 @@ public class BankAccount {
 
     private String accountNumber;
 
-    private String branchName;
+    private String bankName;
 
     @Enumerated(EnumType.STRING)
     private Currency currency;

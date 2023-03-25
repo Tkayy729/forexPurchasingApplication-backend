@@ -27,10 +27,11 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public BankAccountResponse addBankAccount(BankAccountRequest bankAccountRequest, UserDetails userDetails) {
         String email = userDetails.getUsername();
+        System.out.println(email);
         Trader trader = traderService.getTrader(email);
-        BankAccount newAccount = BankAccount.builder().trader(trader).currency(bankAccountRequest.getCurrency()).name(bankAccountRequest.getName()).accountNumber(bankAccountRequest.getAccountNumber()).branchName(bankAccountRequest.getBranchName()).build();
+        BankAccount newAccount = BankAccount.builder().trader(trader).currency(bankAccountRequest.getCurrency()).name(bankAccountRequest.getName()).accountNumber(bankAccountRequest.getAccountNumber()).bankName(bankAccountRequest.getBankName()).build();
         BankAccount savedAccount = bankAccountRepository.save(newAccount);
-        return BankAccountResponse.builder().id(savedAccount.getId()).name(savedAccount.getName()).currency(savedAccount.getCurrency()).branchName(savedAccount.getBranchName()).accountNumber(savedAccount.getAccountNumber()).build();
+        return BankAccountResponse.builder().id(savedAccount.getId()).name(savedAccount.getName()).currency(savedAccount.getCurrency()).bankName(savedAccount.getBankName()).accountNumber(savedAccount.getAccountNumber()).build();
     }
 
     public List<BankAccountResponse> getAllBankAccountOfTrader(UserDetails userDetails) throws ResourceNotFoundException {
@@ -41,12 +42,12 @@ public class BankAccountServiceImpl implements BankAccountService {
             throw new ResourceNotFoundException("Empty List of accounts");
         }
         var accounts = allAccounts.get();
-        return accounts.parallelStream().map(account -> BankAccountResponse.builder().accountNumber(account.getAccountNumber()).branchName(account.getBranchName()).id(account.getId()).name(account.getName()).currency(account.getCurrency()).build()).collect(Collectors.toList());
+        return accounts.parallelStream().map(account -> BankAccountResponse.builder().accountNumber(account.getAccountNumber()).bankName(account.getBankName()).id(account.getId()).name(account.getName()).currency(account.getCurrency()).build()).collect(Collectors.toList());
     }
 
     public BankAccountResponse getAccount(Long bankAccountId,  @AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
         var foundAccount = findAccount(bankAccountId,userDetails);
-        return BankAccountResponse.builder().id(foundAccount.getId()).branchName(foundAccount.getBranchName()).name(foundAccount.getName()).currency(foundAccount.getCurrency()).accountNumber(foundAccount.getAccountNumber()).build();
+        return BankAccountResponse.builder().id(foundAccount.getId()).bankName(foundAccount.getBankName()).name(foundAccount.getName()).currency(foundAccount.getCurrency()).accountNumber(foundAccount.getAccountNumber()).build();
     }
 
     public BankAccount findAccount(Long bankAccountId, @AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {

@@ -39,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var savedTrader = repository.save(trader);
         var jwtToken = jwtService.generateToken(trader);
         saveTraderToken(savedTrader, jwtToken);
-        return AuthenticationResponse.builder().token(jwtToken).message("success").build();
+        return AuthenticationResponse.builder().token(jwtToken).firstname(savedTrader.getFirstname()).message("success").build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -48,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var jwtToken = jwtService.generateToken(trader);
         revokeAllUserTokens(trader);
         saveTraderToken(trader, jwtToken);
-        return AuthenticationResponse.builder().token(jwtToken).message("success").build();
+        return AuthenticationResponse.builder().token(jwtToken).firstname(trader.getFirstname()).message("success").build();
     }
 
     private void saveTraderToken(Trader trader, String jwtToken) {

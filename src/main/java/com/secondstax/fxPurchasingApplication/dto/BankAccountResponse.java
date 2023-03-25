@@ -17,7 +17,7 @@ public class BankAccountResponse {
 
     private String accountNumber;
 
-    private String branchName;
+    private String bankName;
 
     private Currency currency;
 

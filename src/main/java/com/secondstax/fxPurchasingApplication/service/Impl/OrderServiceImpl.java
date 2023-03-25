@@ -2,7 +2,9 @@ package com.secondstax.fxPurchasingApplication.service.Impl;
 
 import com.secondstax.fxPurchasingApplication.dto.OrderRequest;
 import com.secondstax.fxPurchasingApplication.dto.OrderResponse;
+import com.secondstax.fxPurchasingApplication.enums.OrderStatus;
 import com.secondstax.fxPurchasingApplication.enums.Provider;
+import com.secondstax.fxPurchasingApplication.exception.OrderCreationConflictException;
 import com.secondstax.fxPurchasingApplication.exception.ResourceNotFoundException;
 import com.secondstax.fxPurchasingApplication.model.BankAccount;
 import com.secondstax.fxPurchasingApplication.model.Order;
@@ -34,10 +36,11 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse createOrder(OrderRequest orderRequest, @AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
         String email = userDetails.getUsername();
         Trader trader = traderService.getTrader(email);
-        BankAccount bankAccount = bankAccountService.findAccount(orderRequest.bankAccountId(),userDetails);
+        BankAccount bankAccount = bankAccountService.findAccount(orderRequest.bankAccountId() ,userDetails);
         if (!Objects.equals(orderRequest.exchange(), bankAccount.getCurrency())) {
-            throw new RuntimeException("Cannot create order because selected account cannot receive this currency");
+            throw new OrderCreationConflictException("Cannot create order because selected account cannot receive this currency");
         }
+
         Order newOrder = Order.builder().exchange(orderRequest.exchange()).
                 trader(trader)
                 .bankAccount(bankAccount)
@@ -45,8 +48,18 @@ public class OrderServiceImpl implements OrderService {
                 .amount(orderRequest.amount())
                 .build();
 
+        if(orderRequest.amount() <= 0){
+            throw new OrderCreationConflictException("Cannot create an order with less or zero amount");
+        } else if (orderRequest.amount() >= 1 && orderRequest.amount() <= 50) {
+           newOrder.setStatus(OrderStatus.FULFILLED);
+        }else if (orderRequest.amount() >= 51 && orderRequest.amount() <= 100) {
+            newOrder.setStatus(OrderStatus.PENDING);
+        } else {
+            newOrder.setStatus(OrderStatus.FAILED);
+        }
+
         var savedOrder = repository.save(newOrder);
-        return new OrderResponse(savedOrder.getTrader().getEmail(), savedOrder.getProvider(), savedOrder.getBankAccount().getId(), savedOrder.getExchange(), savedOrder.getAmount());
+        return new OrderResponse(savedOrder.getId(),savedOrder.getTrader().getEmail(), savedOrder.getProvider(), savedOrder.getBankAccount(), savedOrder.getExchange(), savedOrder.getAmount(), savedOrder.getStatus());
     }
 
     private Order getOrder(Long orderId,@AuthenticationPrincipal UserDetails userDetails) throws ResourceNotFoundException {
@@ -62,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderResponse getOne(Long orderId,@AuthenticationPrincipal UserDetails userDetails ) throws ResourceNotFoundException {
         var foundOrder = getOrder(orderId,userDetails);
-        return new OrderResponse(foundOrder.getTrader().getEmail(), foundOrder.getProvider(), foundOrder.getBankAccount().getId(), foundOrder.getExchange(), foundOrder.getAmount());
+        return new OrderResponse(foundOrder.getId(), foundOrder.getTrader().getEmail(), foundOrder.getProvider(), foundOrder.getBankAccount(), foundOrder.getExchange(), foundOrder.getAmount(), foundOrder.getStatus());
     }
 
     public List<OrderResponse> getAllOrdersOfTrader(UserDetails userDetails) throws ResourceNotFoundException {
@@ -73,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
             throw new ResourceNotFoundException("Empty List of orders");
         }
         var orders = allOrders.get();
-        return orders.parallelStream().map(order -> new OrderResponse(order.getTrader().getEmail(), order.getProvider(), order.getBankAccount().getId(), order.getExchange(), order.getAmount())).collect(Collectors.toList());
+        return orders.parallelStream().map(order -> new OrderResponse(order.getId(),order.getTrader().getEmail(), order.getProvider(), order.getBankAccount(), order.getExchange(), order.getAmount(),order.getStatus())).collect(Collectors.toList());
     }
 
 

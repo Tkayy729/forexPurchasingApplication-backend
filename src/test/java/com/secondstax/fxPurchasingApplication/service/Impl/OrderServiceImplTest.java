@@ -1,11 +1,9 @@
 package com.secondstax.fxPurchasingApplication.service.Impl;
 
 import com.secondstax.fxPurchasingApplication.dto.OrderRequest;
-import com.secondstax.fxPurchasingApplication.dto.RegisterRequest;
-import com.secondstax.fxPurchasingApplication.enums.Currency;
+
 import com.secondstax.fxPurchasingApplication.exception.OrderCreationConflictException;
 import com.secondstax.fxPurchasingApplication.exception.ResourceNotFoundException;
-import com.secondstax.fxPurchasingApplication.exception.TraderAlreadyExistException;
 import com.secondstax.fxPurchasingApplication.model.BankAccount;
 import com.secondstax.fxPurchasingApplication.model.Trader;
 import com.secondstax.fxPurchasingApplication.repository.OrderRepository;
@@ -18,14 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import javax.swing.text.html.Option;
-
-import java.util.Optional;
 
 import static com.secondstax.fxPurchasingApplication.enums.Currency.EUR;
 import static com.secondstax.fxPurchasingApplication.enums.Currency.NAIRA;
 import static com.secondstax.fxPurchasingApplication.enums.Provider.PA;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest

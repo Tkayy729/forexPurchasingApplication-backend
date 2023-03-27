@@ -1,5 +1,5 @@
 package com.secondstax.fxPurchasingApplication.enums;
 
 public enum Currency {
-    USD,EUR,NAIRA,POU,CED
+    NAIRA, CEDI , USD , EUR ,CEFA, POUND
 }

@@ -22,4 +22,9 @@ public class AppExceptionHandler {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(ZeroOrLessAmountException.class)
+    public ResponseEntity<String> handleAmountLessOrEqualsZero(ZeroOrLessAmountException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

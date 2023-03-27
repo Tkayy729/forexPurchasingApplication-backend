@@ -35,7 +35,7 @@ public class LiquidityProviderServiceImpl implements LiquidityService {
 
     public String addData(ProviderDataRequest providerDataRequest){
         ProviderData data = ProviderData.builder().provider(providerDataRequest.provider() )
-                .amount(providerDataRequest.amount())
+                .rate(providerDataRequest.rate())
                 .exchange(providerDataRequest.currency()).build();
 
         providerRepository.save(data);

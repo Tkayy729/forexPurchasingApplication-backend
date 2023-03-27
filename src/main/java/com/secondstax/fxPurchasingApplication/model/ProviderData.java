@@ -18,7 +18,7 @@ public class ProviderData {
     private Long id;
     @Enumerated(EnumType.STRING)
     private Provider provider;
-    private Double amount;
+    private Double rate;
     @Enumerated(EnumType.STRING)
     private Currency exchange;
 }

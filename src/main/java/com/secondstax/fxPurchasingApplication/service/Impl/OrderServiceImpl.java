@@ -6,6 +6,7 @@ import com.secondstax.fxPurchasingApplication.enums.OrderStatus;
 import com.secondstax.fxPurchasingApplication.enums.Provider;
 import com.secondstax.fxPurchasingApplication.exception.OrderCreationConflictException;
 import com.secondstax.fxPurchasingApplication.exception.ResourceNotFoundException;
+import com.secondstax.fxPurchasingApplication.exception.ZeroOrLessAmountException;
 import com.secondstax.fxPurchasingApplication.model.BankAccount;
 import com.secondstax.fxPurchasingApplication.model.Order;
 import com.secondstax.fxPurchasingApplication.model.Trader;
@@ -49,14 +50,16 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderValidation( orderRequest,  newOrder);
-
+        if(newOrder.getStatus() == OrderStatus.FAILED){
+            return null;
+        }
         var savedOrder = repository.save(newOrder);
         return new OrderResponse(savedOrder.getId(),savedOrder.getTrader().getEmail(), savedOrder.getProvider(), savedOrder.getBankAccount(), savedOrder.getExchange(), savedOrder.getAmount(), savedOrder.getStatus());
     }
 
     private void orderValidation(OrderRequest orderRequest, Order newOrder){
         if(orderRequest.amount() <= 0){
-            throw new OrderCreationConflictException("Cannot create an order with less or zero amount");
+            throw new ZeroOrLessAmountException("Cannot create an order with less or zero amount");
         } else if (orderRequest.amount() >= 1 && orderRequest.amount() <= 50) {
             newOrder.setStatus(OrderStatus.FULFILLED);
         }else if (orderRequest.amount() >= 51 && orderRequest.amount() <= 100) {

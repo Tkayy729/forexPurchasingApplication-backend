@@ -6,7 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 public record ProviderDataRequest(
-        Double amount,
+        Double rate,
         Provider provider,
         Currency currency
 ) {

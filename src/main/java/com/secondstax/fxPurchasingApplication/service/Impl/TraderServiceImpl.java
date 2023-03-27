@@ -18,4 +18,5 @@ public class TraderServiceImpl implements TraderService {
     public Trader getTrader(String  email) {
         return repository.findByEmail(email).orElseThrow(() -> new TraderNotFoundException("Trader not found"));
     }
+
 }

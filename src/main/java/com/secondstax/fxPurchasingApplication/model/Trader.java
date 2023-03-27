@@ -19,7 +19,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@CrossOrigin(origins = "*")
 public class Trader implements UserDetails {
     @Id
     private String email;

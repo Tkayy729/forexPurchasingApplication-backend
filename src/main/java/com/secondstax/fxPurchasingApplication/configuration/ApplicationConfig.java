@@ -37,13 +37,7 @@ public class ApplicationConfig  {
         return authProvider;
     }
 
-//    @Bean
-//    public LogoutHandler logoutHandler() {
-//
-//        return (request, response, authentication) -> {
-//
-//        };
-//    }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
